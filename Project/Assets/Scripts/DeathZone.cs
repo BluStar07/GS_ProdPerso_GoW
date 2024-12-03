@@ -5,28 +5,27 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class DeathZone : MonoBehaviour
 {
-    [SerializeField] private GameObject _player;
+    [SerializeField] private CharacterController _player;
 
-    [SerializeField] GameObject _respawnPoint;
-    Vector3 _respawnPos;
-
-    private void Start()
-    {
-        _respawnPos = _respawnPoint.transform.position;
-    }
+    [SerializeField] Transform _respawnPoint;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player find");
 
-            TeleportPlayer();
+            if (other.GetComponent<CharacterController>() != null)
+            {
+                _player = other.GetComponent<CharacterController>();
+                TeleportPlayer();
+            }
         }
     }
 
     private void TeleportPlayer()
     {
-        _player.transform.position = new Vector3(0, 0, 0);
+        _player.enabled = false;
+        _player.gameObject.transform.position = _respawnPoint.position;
+        _player.enabled = true;
     }
 }
