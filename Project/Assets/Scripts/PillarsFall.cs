@@ -6,7 +6,11 @@ using UnityEngine.InputSystem;
 public class PillarsFall : MonoBehaviour
 {
     [SerializeField] GameObject _pillars;
+    [SerializeField] GameObject _BoxCollider;
     private Animator _animator;
+
+    [SerializeField] List<GameObject> _toDisable;
+    [SerializeField] List<GameObject> _toEnable;
 
     private void Start()
     {
@@ -14,6 +18,16 @@ public class PillarsFall : MonoBehaviour
             _animator = _pillars.GetComponent<Animator>();
         else
             Debug.LogError("There is no pillars associate to this script " + this.name);
+
+        foreach (var item in _toDisable)
+        {
+            item.SetActive(true);
+        }
+
+        foreach (var item in _toEnable)
+        {
+            item.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,6 +35,17 @@ public class PillarsFall : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _animator.SetBool("Fall", true);
+            _BoxCollider.SetActive(false);
+
+            foreach (var item in _toDisable)
+            {
+                item.SetActive(false);
+            }
+
+            foreach (var item in _toEnable)
+            {
+                item.SetActive(true);
+            }
         }
     }
 }

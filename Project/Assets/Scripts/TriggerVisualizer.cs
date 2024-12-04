@@ -4,6 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class TriggerVisualizer : MonoBehaviour
 {
+    [SerializeField] bool _visible = true;
+
     [SerializeField] private Color gizmoColor = new Color(0f, 1f, 0f, 0.3f);
     private Color color;
     private void OnDrawGizmos()
@@ -12,7 +14,7 @@ public class TriggerVisualizer : MonoBehaviour
         color.a = 1f;
         BoxCollider boxCollider = GetComponent<BoxCollider>();
 
-        if (boxCollider != null && boxCollider.isTrigger)
+        if (boxCollider != null && _visible)
         {
             Gizmos.color = gizmoColor;
             Gizmos.matrix = transform.localToWorldMatrix;
